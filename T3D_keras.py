@@ -135,7 +135,7 @@ def DenseNet3D(input_shape, growth_rate=32, block_config=(6, 12, 24, 16),
     x = Flatten(name='flatten_3d')(x)
     x = Dense(1024, activation='relu')(x)
     #--------------from 2d densenet model-----------------
-    y = GlobalAveragePooling3D(name='avg_pool_densnet3d', padding="same")(batch_densenet.output)
+    y = GlobalAveragePooling3D(name='avg_pool_densnet3d')(batch_densenet.output)
     y = Dense(1024, activation='relu')(y)
 
     #-----------------------------------------------------
