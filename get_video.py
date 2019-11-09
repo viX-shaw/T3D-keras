@@ -47,6 +47,7 @@ def get_video_and_label(index, data, frames_per_video, frame_height, frame_width
     sport_class = data['class'].values[index]
 
     clip = np.expand_dims(clip, axis=0)
+    frames = np.expand_dims(frames, axis=0)
 
     # print('Frame shape',frame.shape)
     # print('Clip shape',clip.shape)
@@ -65,7 +66,7 @@ def video_gen(data, frames_per_video, frame_height, frame_width, channels, num_c
 
             # initializing the arrays, x_train and y_train
             input_3d = np.empty([0, frames_per_video, frame_height, frame_width, channels], dtype=np.float32)
-            input_2d = np.empty([0, 224, 224, 3], dtype=np.float32)
+            input_2d = np.empty([0, frames_per_video, 224, 224, 3], dtype=np.float32)
 
             y_train = np.empty([0], dtype=np.int32)
 
