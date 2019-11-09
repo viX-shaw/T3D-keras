@@ -34,7 +34,7 @@ def get_video_frames(src, fpv, frame_height, frame_width):
     avg_resized_frames_3d = []
     for af in avg_frames:
         rsz_f_3d = cv2.resize(af, (frame_width, frame_height))
-        rsz_f_2d = cv2.resize(af, (224, 224))
+        rsz_f_2d = cv2.resize(af, (256, 256))
         avg_resized_frames_2d.append(rsz_f_2d)
         avg_resized_frames_3d.append(rsz_f_3d)
     return np.asarray(avg_resized_frames_2d)/255.0, np.asarray(avg_resized_frames_3d)/255.0
