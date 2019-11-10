@@ -87,6 +87,6 @@ def video_gen(data, frames_per_video, frame_height, frame_width, channels, num_c
                 input_2d = np.append(input_2d, frames, axis=0)
                 input_3d = np.append(input_3d, single_clip, axis=0)
                 
-            y_train = to_categorical(y_train, num_classes=2) # Num classes 2 for transfer 2D -> 3D
+            y_train = to_categorical(y_train, num_classes=num_classes) # Num classes 2 for transfer 2D -> 3D
 
             yield ([input_2d, input_3d], y_train)

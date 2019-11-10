@@ -32,7 +32,7 @@ def train():
     d_train = pd.read_csv(os.path.join('train.csv'))
     d_valid = pd.read_csv(os.path.join('test.csv'))
     # Split data into random training and validation sets
-    nb_classes = len(set(d_train['class']))
+    nb_classes = 2 #len(set(d_train['class']))
 
     video_train_generator = video_gen(
         d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
