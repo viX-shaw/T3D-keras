@@ -19,6 +19,7 @@ parser.add_argument("--bs", type=int, default=1, help="Enter the batch_size")
 parser.add_argument("--q_size", type=int, default=10, help="Keras Fit Generator max_queue_size")
 parser.add_argument("--workers", type=int, default=1, help="Keras Fit Generator workers")
 parser.add_argument("--epochs", type=int, default=200, help="epochs, times you want to feed all the data")
+parser.add_argument("--use_multiprocessing", type=str, default="False", help="use mulitple processes")
 
 
 
@@ -34,6 +35,7 @@ BATCH_SIZE = params.bs
 EPOCHS = params.epochs
 MODEL_FILE_NAME = 'T3D_saved_model.h5'
 
+use_multiprocessing = True if params.use_multiprocessing == "True" else False
 
 def train():
     sample_input = np.empty(
@@ -88,7 +90,8 @@ def train():
         verbose=1,
         callbacks=callbacks_list,
         max_queue_size=params.q_size,
-        workers=params.workers
+        workers=params.workers,
+        use_multiprocessing=use_multiprocessing
     )
     model.save(MODEL_FILE_NAME)
 
