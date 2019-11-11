@@ -7,19 +7,24 @@ from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from keras.optimizers import Adam, SGD
 import keras.backend as K
 import traceback
+import argparse
 
 from T3D_keras import densenet161_3D_DropOut, densenet121_3D_DropOut
 from get_video import video_gen
 
 # there is a minimum number of frames that the network must have, values below 10 gives -- ValueError: Negative dimension size caused by subtracting 3 from 2 for 'conv3d_7/convolution'
 # paper uses 224x224, but in that case also the above error occurs
+parser = argparse.ArgumentParser()
+parser.add_argument("--bs", type=int, default=1, help="Enter the batch_size")
+params = parser.parse_args()
+
 FRAMES_PER_VIDEO = 20
 FRAME_HEIGHT = 256
 FRAME_WIDTH = 256
 FRAME_CHANNEL = 3
 NUM_CLASSES = 50
 #Train 2D & 3D CNNs for a single video for transfer learning
-BATCH_SIZE = 1
+BATCH_SIZE = params.bs
 EPOCHS = 200
 MODEL_FILE_NAME = 'T3D_saved_model.h5'
 
