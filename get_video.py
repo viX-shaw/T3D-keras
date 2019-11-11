@@ -111,7 +111,7 @@ class DataGenerator(Sequence):
         self.indices_arr = np.random.permutation(self.data.count()[0])
     
     def __getitem__(self, index):
-        current_batch = self.indices_arr[index:(index + batch_size)]
+        current_batch = self.indices_arr[index:(index + self.batch_size)]
 
         # initializing the arrays, x_train and y_train
         input_3d = np.empty([0, self.frames_per_video, self.frame_height, self.frame_width, self.channels], dtype=np.float32)
