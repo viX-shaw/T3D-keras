@@ -122,12 +122,12 @@ class DataGenerator(Sequence):
         for i in current_batch:
             # get frames and its corresponding color for an traffic light
             frames, single_clip, sport_class = get_video_and_label(
-                i, data, frames_per_video, frame_height, frame_width)
+                i, self.data, self.frames_per_video, self.frame_height, self.frame_width)
             
             #Every 3 steps feed neg_pair
             if index % 3 == 0:
                 _, single_clip, sport_class = get_video_and_label(
-                    (i+1)%len(indices_arr), data, frames_per_video, frame_height, frame_width)
+                    (i+1)%len(self.indices_arr), self.data, self.frames_per_video, self.frame_height, self.frame_width)
                 y_train = np.append(y_train, [0])
             else:
                 y_train = np.append(y_train, [1])
@@ -136,6 +136,6 @@ class DataGenerator(Sequence):
             input_2d = np.append(input_2d, frames, axis=0)
             input_3d = np.append(input_3d, single_clip, axis=0)
             
-        y_train = to_categorical(y_train, num_classes=num_classes) # Num classes 2 for transfer 2D -> 3D
+        y_train = to_categorical(y_train, num_classes=self.num_classes) # Num classes 2 for transfer 2D -> 3D
 
         return ([input_2d, input_3d], y_train)
