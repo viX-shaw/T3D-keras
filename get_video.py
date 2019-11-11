@@ -101,7 +101,8 @@ class DataGenerator(Sequence):
         self.frame_width = frame_width
         self.channels = channels
         self.num_classes = num_classes
-        self.batch_size = batch_size        
+        self.batch_size = batch_size
+        self.on_epoch_end()        
 
     def __len__(self):
         return self.data.count()[0]
