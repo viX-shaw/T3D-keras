@@ -1,6 +1,7 @@
 import os
 import cv2
 import numpy as np
+from keras.utils import Sequence
 from keras.utils.np_utils import to_categorical
 import random
 
@@ -91,7 +92,7 @@ def video_gen(data, frames_per_video, frame_height, frame_width, channels, num_c
 
             yield ([input_2d, input_3d], y_train)
 
-class DataGenerator(keras.utils.Sequence):
+class DataGenerator(Sequence):
 
     def __init__(self, data, frames_per_video, frame_height, frame_width, channels, num_classes, batch_size=1):
         self.data = data
