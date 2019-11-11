@@ -19,7 +19,7 @@ FRAME_WIDTH = 256
 FRAME_CHANNEL = 3
 NUM_CLASSES = 50
 #Train 2D & 3D CNNs for a single video for transfer learning
-BATCH_SIZE = 16
+BATCH_SIZE = 1
 EPOCHS = 200
 MODEL_FILE_NAME = 'T3D_saved_model.h5'
 
