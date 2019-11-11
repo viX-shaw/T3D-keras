@@ -16,6 +16,12 @@ from get_video import video_gen
 # paper uses 224x224, but in that case also the above error occurs
 parser = argparse.ArgumentParser()
 parser.add_argument("--bs", type=int, default=1, help="Enter the batch_size")
+parser.add_argument("--q_size", type=int, default=10, help="Keras Fit Generator max_queue_size")
+parser.add_argument("--workers", type=int, default=1, help="Keras Fit Generator workers")
+parser.add_argument("--epochs", type=int, default=200, help="epochs, times you want to feed all the data")
+
+
+
 params = parser.parse_args()
 
 FRAMES_PER_VIDEO = 20
@@ -25,7 +31,7 @@ FRAME_CHANNEL = 3
 NUM_CLASSES = 50
 #Train 2D & 3D CNNs for a single video for transfer learning
 BATCH_SIZE = params.bs
-EPOCHS = 200
+EPOCHS = params.epochs
 MODEL_FILE_NAME = 'T3D_saved_model.h5'
 
 
@@ -81,7 +87,8 @@ def train():
         validation_steps=val_steps,
         verbose=1,
         callbacks=callbacks_list,
-        workers=1
+        max_queue_size=params.q_size,
+        workers=params.workers
     )
     model.save(MODEL_FILE_NAME)
 
