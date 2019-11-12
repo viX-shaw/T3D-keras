@@ -8,6 +8,7 @@ from keras.optimizers import Adam, SGD
 import keras.backend as K
 import traceback
 import argparse
+import tensorflow as tf
 
 from T3D_keras import densenet161_3D_DropOut, densenet121_3D_DropOut
 from get_video import video_gen, DataGenerator
@@ -37,6 +38,11 @@ MODEL_FILE_NAME = 'T3D_saved_model.h5'
 
 use_multiprocessing = True if params.use_multiprocessing == "True" else False
 
+#TPU check and initialization
+resolver = tf.contrib.cluster_resolver.TPUClusterResolver('grpc://' + os.environ['COLAB_TPU_ADDR'])
+tf.contrib.distribute.initialize_tpu_system(resolver)
+strategy = tf.contrib.distribute.TPUStrategy(resolver)
+
 def train():
     sample_input = np.empty(
         [FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL], dtype=np.uint8)
@@ -59,7 +65,6 @@ def train():
     
     # Get Model
     # model = densenet121_3D_DropOut(sample_input.shape, nb_classes)
-    model = densenet161_3D_DropOut(sample_input.shape, nb_classes)
 
     checkpoint = ModelCheckpoint('T3D_saved_model_weights.hdf5', monitor='val_loss',
                                  verbose=1, save_best_only=True, mode='min', save_weights_only=True)
@@ -70,10 +75,12 @@ def train():
 
     callbacks_list = [checkpoint, reduceLROnPlat, earlyStop]
 
-    # compile model
-    optim = Adam(lr=1e-4, decay=1e-6)
-    #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
-    model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
+    with strategy.scope():
+        model = densenet161_3D_DropOut(sample_input.shape, nb_classes)
+        # compile model
+        optim = Adam(lr=1e-4, decay=1e-6)
+        #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
+        model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
     
     if os.path.exists('./T3D_saved_model_weights.hdf5'):
         print('Pre-existing model weights found, loading weights.......')
