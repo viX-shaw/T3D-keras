@@ -83,7 +83,7 @@ def DenseNet3D(input_shape, growth_rate=32, block_config=(6, 12, 24, 16),
     """
     #-----------------------------------------------------------------
     inp_2d = (Input(shape=(224,224,3), name='2d_input'))
-    batch_densenet = densenet.DenseNet169(include_top=False, input_shape=(224,224,3), input_tensor=inp_2d, weights=None)
+    batch_densenet = densenet.DenseNet169(include_top=False, input_shape=(224,224,3), input_tensor=inp_2d, weights='imagenet')
     
     for layer in batch_densenet.layers:
         layer.trainable = False

@@ -88,7 +88,7 @@ def train():
         optim = Adam(learning_rate=1e-4, beta_1=1e-6)
         #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
         model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
-    densenet.load_weights(DENSENET169_WEIGHT_PATH_NO_TOP)
+    # densenet.load_weights(DENSENET169_WEIGHT_PATH_NO_TOP)
     
     if os.path.exists('./T3D_saved_model_weights.hdf5'):
         print('Pre-existing model weights found, loading weights.......')
