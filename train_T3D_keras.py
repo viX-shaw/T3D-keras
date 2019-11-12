@@ -44,12 +44,6 @@ MODEL_FILE_NAME = 'T3D_saved_model.h5'
 
 use_multiprocessing = True if params.use_multiprocessing == "True" else False
 
-#TPU check and initialization
-resolver = tf.contrib.cluster_resolver.TPUClusterResolver('grpc://' + os.environ['COLAB_TPU_ADDR'])
-tf.config.experimental_connect_to_host(resolver.master())
-tf.contrib.distribute.initialize_tpu_system(resolver)
-strategy = tf.contrib.distribute.TPUStrategy(resolver)
-
 def train():
     sample_input = np.empty(
         [FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL], dtype=np.uint8)
@@ -81,6 +75,12 @@ def train():
                                        verbose=1, mode='min', min_delta=0.0001, cooldown=2, min_lr=1e-6)
 
     callbacks_list = [checkpoint, reduceLROnPlat, earlyStop]
+
+    #TPU check and initialization
+    resolver = tf.contrib.cluster_resolver.TPUClusterResolver('grpc://' + os.environ['COLAB_TPU_ADDR'])
+    tf.config.experimental_connect_to_host(resolver.master())
+    tf.contrib.distribute.initialize_tpu_system(resolver)
+    strategy = tf.contrib.distribute.TPUStrategy(resolver)
 
     with strategy.scope():
         model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
