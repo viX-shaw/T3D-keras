@@ -46,6 +46,7 @@ use_multiprocessing = True if params.use_multiprocessing == "True" else False
 
 #TPU check and initialization
 resolver = tf.contrib.cluster_resolver.TPUClusterResolver('grpc://' + os.environ['COLAB_TPU_ADDR'])
+tf.config.experimental_connect_to_host(resolver.master())
 tf.contrib.distribute.initialize_tpu_system(resolver)
 strategy = tf.contrib.distribute.TPUStrategy(resolver)
 
