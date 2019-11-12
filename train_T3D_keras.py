@@ -3,8 +3,8 @@ import os
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
-from keras.optimizers import Adam, SGD
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.optimizers import Adam, SGD
 import tensorflow.keras.backend as K
 import traceback
 import argparse
@@ -88,7 +88,7 @@ def train():
     # with strategy.scope():
     model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
     # compile model
-    optim = Adam(lr=1e-4, decay=1e-6)
+    optim = Adam(learning_rate=1e-4, beta_1=1e-6)
     #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
     model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
     model = tf.contrib.tpu.keras_to_tpu_model(model, strategy)
