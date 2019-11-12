@@ -83,7 +83,7 @@ def train():
     # strategy = tf.contrib.distribute.TPUStrategy(resolver)
     TPU_WORKER = 'grpc://' + os.environ['COLAB_TPU_ADDR']
     strategy=tf.contrib.tpu.TPUDistributionStrategy(
-    tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER)))
+    tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER))
 
     with strategy.scope():
         model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
