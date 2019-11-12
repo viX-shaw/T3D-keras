@@ -23,6 +23,12 @@ parser.add_argument("--epochs", type=int, default=200, help="epochs, times you w
 parser.add_argument("--use_multiprocessing", type=str, default="False", help="use mulitple processes")
 
 
+BASE_WEIGTHS_PATH = (
+    'https://github.com/keras-team/keras-applications/'
+    'releases/download/densenet/')
+DENSENET169_WEIGHT_PATH_NO_TOP = (
+    BASE_WEIGTHS_PATH +
+    'densenet169_weights_tf_dim_ordering_tf_kernels_notop.h5')
 
 params = parser.parse_args()
 
@@ -76,11 +82,12 @@ def train():
     callbacks_list = [checkpoint, reduceLROnPlat, earlyStop]
 
     with strategy.scope():
-        model = densenet161_3D_DropOut(sample_input.shape, nb_classes)
+        model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
         # compile model
         optim = Adam(lr=1e-4, decay=1e-6)
         #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
         model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
+        densenet.load_weights(DENSENET169_WEIGHT_PATH_NO_TOP)
     
     if os.path.exists('./T3D_saved_model_weights.hdf5'):
         print('Pre-existing model weights found, loading weights.......')
