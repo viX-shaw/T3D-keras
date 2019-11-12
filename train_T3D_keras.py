@@ -77,21 +77,17 @@ def train():
     callbacks_list = [checkpoint, reduceLROnPlat, earlyStop]
 
     #TPU check and initialization
-    # resolver = tf.contrib.cluster_resolver.TPUClusterResolver('grpc://' + os.environ['COLAB_TPU_ADDR'])
-    # tf.config.experimental_connect_to_host(resolver.master())
-    # tf.contrib.distribute.initialize_tpu_system(resolver)
-    # strategy = tf.contrib.distribute.TPUStrategy(resolver)
     TPU_WORKER = 'grpc://' + os.environ['COLAB_TPU_ADDR']
-    strategy=tf.contrib.tpu.TPUDistributionStrategy(
-    tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER))
+    resolver = tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER)
+    tf.contrib.distribute.initialize_tpu_system(resolver)
+    strategy = tf.contrib.distribute.TPUStrategy(resolver)
 
-    # with strategy.scope():
-    model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
-    # compile model
-    optim = Adam(learning_rate=1e-4, beta_1=1e-6)
-    #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
-    model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
-    model = tf.contrib.tpu.keras_to_tpu_model(model, strategy)
+    with strategy.scope():
+        model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
+        # compile model
+        optim = Adam(learning_rate=1e-4, beta_1=1e-6)
+        #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
+        model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
     densenet.load_weights(DENSENET169_WEIGHT_PATH_NO_TOP)
     
     if os.path.exists('./T3D_saved_model_weights.hdf5'):
