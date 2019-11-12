@@ -85,13 +85,14 @@ def train():
     strategy=tf.contrib.tpu.TPUDistributionStrategy(
     tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER))
 
-    with strategy.scope():
-        model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
-        # compile model
-        optim = Adam(lr=1e-4, decay=1e-6)
-        #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
-        model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
-        densenet.load_weights(DENSENET169_WEIGHT_PATH_NO_TOP)
+    # with strategy.scope():
+    model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
+    # compile model
+    optim = Adam(lr=1e-4, decay=1e-6)
+    #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
+    model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
+    model = tf.contrib.tpu.keras_to_tpu_model(model, strategy)
+    densenet.load_weights(DENSENET169_WEIGHT_PATH_NO_TOP)
     
     if os.path.exists('./T3D_saved_model_weights.hdf5'):
         print('Pre-existing model weights found, loading weights.......')
