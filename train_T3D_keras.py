@@ -77,10 +77,13 @@ def train():
     callbacks_list = [checkpoint, reduceLROnPlat, earlyStop]
 
     #TPU check and initialization
-    resolver = tf.contrib.cluster_resolver.TPUClusterResolver('grpc://' + os.environ['COLAB_TPU_ADDR'])
-    tf.config.experimental_connect_to_host(resolver.master())
-    tf.contrib.distribute.initialize_tpu_system(resolver)
-    strategy = tf.contrib.distribute.TPUStrategy(resolver)
+    # resolver = tf.contrib.cluster_resolver.TPUClusterResolver('grpc://' + os.environ['COLAB_TPU_ADDR'])
+    # tf.config.experimental_connect_to_host(resolver.master())
+    # tf.contrib.distribute.initialize_tpu_system(resolver)
+    # strategy = tf.contrib.distribute.TPUStrategy(resolver)
+    TPU_WORKER = 'grpc://' + os.environ['COLAB_TPU_ADDR']
+    strategy=tf.contrib.tpu.TPUDistributionStrategy(
+    tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER)))
 
     with strategy.scope():
         model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
