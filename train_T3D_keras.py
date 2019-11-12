@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from keras.optimizers import Adam, SGD
-import keras.backend as K
+import tensorflow.keras.backend as K
 import traceback
 import argparse
 import tensorflow as tf

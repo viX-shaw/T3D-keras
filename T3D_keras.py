@@ -1,9 +1,9 @@
-import keras
-from keras.models import Sequential, Model
-from keras.layers import Input, BatchNormalization, Activation, Conv3D, Dropout, Concatenate, AveragePooling3D, MaxPooling3D, Dense, Flatten, GlobalAveragePooling2D, GlobalAveragePooling3D
-from keras.activations import linear, softmax
-from keras.applications import densenet
-from keras.layers import TimeDistributed
+from tensorflow import keras
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import Input, BatchNormalization, Activation, Conv3D, Dropout, Concatenate, AveragePooling3D, MaxPooling3D, Dense, Flatten, GlobalAveragePooling2D, GlobalAveragePooling3D
+from tensorflow.keras.activations import linear, softmax
+from tensorflow.keras.applications import densenet
+from tensorflow.keras.layers import TimeDistributed
 
 __all__ = ['DenseNet', 'densenet121', 'densenet161']  # with DropOut
 
