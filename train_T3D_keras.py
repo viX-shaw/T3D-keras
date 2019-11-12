@@ -101,7 +101,7 @@ def train():
     train_steps = len(d_train)//BATCH_SIZE
     val_steps = len(d_valid)//BATCH_SIZE
 
-    history = model.fit_generator(
+    history = model.fit( #fit_generator does not work with distributed stratergy
         video_train_generator,
         steps_per_epoch=train_steps,
         epochs=EPOCHS,
