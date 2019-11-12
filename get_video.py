@@ -2,7 +2,7 @@ import os
 import cv2
 import numpy as np
 from tensorflow.keras.utils import Sequence
-from tensorflow.keras.utils.np_utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 import random
 
 ROOT_PATH = ''
