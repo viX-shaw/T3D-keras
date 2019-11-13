@@ -86,7 +86,7 @@ def train():
     tf.contrib.distribute.initialize_tpu_system(resolver)
     strategy = tf.contrib.distribute.TPUStrategy(resolver)
 
-    with tf.device("/job:tpu_worker"), strategy.scope():
+    with strategy.scope():
         model, densenet = densenet161_3D_DropOut(sample_input.shape, nb_classes)
         # compile model
         optim = Adam(learning_rate=1e-4, beta_1=1e-6)
