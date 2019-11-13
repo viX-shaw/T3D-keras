@@ -42,8 +42,8 @@ def train():
         [FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL], dtype=np.uint8)
 
     # Read Dataset
-    d_train = pd.read_csv(os.path.join('train.csv'))
-    d_valid = pd.read_csv(os.path.join('test.csv'))
+    d_train = pd.read_csv(os.path.join('train.csv'))[:500]
+    d_valid = pd.read_csv(os.path.join('test.csv'))[:200]
     # Split data into random training and validation sets
     nb_classes = 2 #len(set(d_train['class']))
 
@@ -61,7 +61,7 @@ def train():
     # model = densenet121_3D_DropOut(sample_input.shape, nb_classes)
     model = densenet161_3D_DropOut(sample_input.shape, nb_classes)
 
-    checkpoint = ModelCheckpoint('T3D_saved_model_weights.hdf5', monitor='val_loss',
+    checkpoint = ModelCheckpoint('T3D_saved_model_weights.hdf5', monitor='val_acc',
                                  verbose=1, save_best_only=True, mode='min', save_weights_only=True)
     earlyStop = EarlyStopping(monitor='val_loss', mode='min', patience=100)
     reduceLROnPlat = ReduceLROnPlateau(monitor='val_loss', factor=0.5,
