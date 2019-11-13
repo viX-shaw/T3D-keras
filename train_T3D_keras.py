@@ -107,7 +107,7 @@ def train():
     #TF.data with generator to work with TPU mirrored stratergy
     gn = tf.data.Dataset.from_generator(
         generator_fn_train,
-        ([tf.float32, tf.float32], tf.float32))
+        ((tf.float32, tf.float32), tf.float32))
         # ([tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
         # tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])],
         # tf.TensorShape([])))
@@ -115,7 +115,7 @@ def train():
 
     gn_test = tf.data.Dataset.from_generator(
         generator_fn_test,
-        ([tf.float32, tf.float32], tf.float32))
+        ((tf.float32, tf.float32), tf.float32))
         # ([tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
         # tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])],
         # tf.TensorShape([])))
