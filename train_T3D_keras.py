@@ -79,7 +79,7 @@ def train():
     #TPU check and initialization
     TPU_WORKER = 'grpc://' + os.environ['COLAB_TPU_ADDR']
     resolver = tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER)
-    tf.contrib.distribute.initialize_tpu_system(resolver)
+    # tf.contrib.distribute.initialize_tpu_system(resolver)
     strategy = tf.contrib.distribute.TPUStrategy(resolver)
 
     with strategy.scope():
@@ -109,9 +109,9 @@ def train():
         validation_steps=val_steps,
         verbose=1,
         callbacks=callbacks_list,
-        max_queue_size=params.q_size,
-        workers=params.workers,
-        use_multiprocessing=use_multiprocessing
+        # max_queue_size=params.q_size,
+        # workers=params.workers,
+        # use_multiprocessing=use_multiprocessing
     )
     model.save(MODEL_FILE_NAME)
 
