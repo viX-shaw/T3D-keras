@@ -100,12 +100,26 @@ def train():
 
     train_steps = len(d_train)//BATCH_SIZE
     val_steps = len(d_valid)//BATCH_SIZE
-
-    history = model.fit( #fit_generator does not work with distributed stratergy
+    #TF.data with generator to work with TPU mirrored stratergy
+    gn = tf.data.Dataset.batch(BATCH_SIZE).from_generator(
         video_train_generator,
+        ([tf.float32, tf.float32], tf.float32),
+        ([tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
+        tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])],
+        tf.TensorShape([1])))
+
+    gn_test = tf.data.Dataset.batch(BATCH_SIZE).from_generator(
+        video_val_generator,
+        ([tf.float32, tf.float32], tf.float32),
+        ([tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
+        tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])],
+        tf.TensorShape([1])))
+    )
+    history = model.fit( #fit_generator does not work with distributed stratergy
+        gn,
         steps_per_epoch=train_steps,
         epochs=EPOCHS,
-        validation_data=video_val_generator,
+        validation_data=gn_test,
         validation_steps=val_steps,
         verbose=1,
         callbacks=callbacks_list,
