@@ -59,6 +59,10 @@ def train():
     video_val_generator = video_gen(
         d_valid, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
 
+    def generator_fn_train():
+        return video_train_generator
+    def generator_fn_test():
+        return video_val_generator
     # video_train_generator = DataGenerator(
     #     d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
     # video_val_generator = DataGenerator(
@@ -102,7 +106,7 @@ def train():
     val_steps = len(d_valid)//BATCH_SIZE
     #TF.data with generator to work with TPU mirrored stratergy
     gn = tf.data.Dataset.from_generator(
-        video_train_generator,
+        generator_fn_train,
         ([tf.float32, tf.float32], tf.float32),
         ([tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
         tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])],
@@ -110,7 +114,7 @@ def train():
         (d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, BATCH_SIZE))
 
     gn_test = tf.data.Dataset.from_generator(
-        video_val_generator,
+        generator_fn_test,
         ([tf.float32, tf.float32], tf.float32),
         ([tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
         tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])],
