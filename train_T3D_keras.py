@@ -92,7 +92,25 @@ def train():
         optim = Adam(learning_rate=1e-4, beta_1=1e-6)
         #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
         model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
-    # densenet.load_weights(DENSENET169_WEIGHT_PATH_NO_TOP)
+        # densenet.load_weights(DENSENET169_WEIGHT_PATH_NO_TOP)
+        train_steps = len(d_train)//BATCH_SIZE
+        val_steps = len(d_valid)//BATCH_SIZE
+        #TF.data with generator to work with TPU mirrored stratergy
+        gn = tf.data.Dataset.from_generator(
+            generator_fn_train,
+            ((tf.float32, tf.float32), tf.float32),
+            ((tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
+            tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])),
+            tf.TensorShape([None])))
+            # (d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, BATCH_SIZE))
+
+        gn_test = tf.data.Dataset.from_generator(
+            generator_fn_test,
+            ((tf.float32, tf.float32), tf.float32),
+            ((tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
+            tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])),
+            tf.TensorShape([None])))
+            # (d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, BATCH_SIZE))
     
     if os.path.exists('./T3D_saved_model_weights.hdf5'):
         print('Pre-existing model weights found, loading weights.......')
@@ -102,24 +120,6 @@ def train():
     # train model
     print('Training started....')
 
-    train_steps = len(d_train)//BATCH_SIZE
-    val_steps = len(d_valid)//BATCH_SIZE
-    #TF.data with generator to work with TPU mirrored stratergy
-    gn = tf.data.Dataset.from_generator(
-        generator_fn_train,
-        ((tf.float32, tf.float32), tf.float32),
-        ((tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
-        tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])),
-        tf.TensorShape([None])))
-        # (d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, BATCH_SIZE))
-
-    gn_test = tf.data.Dataset.from_generator(
-        generator_fn_test,
-        ((tf.float32, tf.float32), tf.float32),
-        ((tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
-        tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])),
-        tf.TensorShape([None])))
-        # (d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, BATCH_SIZE))
         
     history = model.fit( #fit_generator does not work with distributed stratergy
         gn,
