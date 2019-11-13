@@ -101,14 +101,14 @@ def train():
     train_steps = len(d_train)//BATCH_SIZE
     val_steps = len(d_valid)//BATCH_SIZE
     #TF.data with generator to work with TPU mirrored stratergy
-    gn = tf.data.Dataset().batch(BATCH_SIZE).from_generator(
+    gn = tf.data.Dataset.from_generator(
         video_train_generator,
         ([tf.float32, tf.float32], tf.float32),
         ([tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
         tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])],
         tf.TensorShape([1])))
 
-    gn_test = tf.data.Dataset().batch(BATCH_SIZE).from_generator(
+    gn_test = tf.data.Dataset.from_generator(
         video_val_generator,
         ([tf.float32, tf.float32], tf.float32),
         ([tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
