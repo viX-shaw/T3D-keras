@@ -54,15 +54,15 @@ def train():
     # Split data into random training and validation sets
     nb_classes = 2 #len(set(d_train['class']))
 
-    # video_train_generator = video_gen(
-    #     d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
-    # video_val_generator = video_gen(
-    #     d_valid, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
-
-    video_train_generator = DataGenerator(
+    video_train_generator = video_gen(
         d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
-    video_val_generator = DataGenerator(
+    video_val_generator = video_gen(
         d_valid, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
+
+    # video_train_generator = DataGenerator(
+    #     d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
+    # video_val_generator = DataGenerator(
+    #     d_valid, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
     
     # Get Model
     # model = densenet121_3D_DropOut(sample_input.shape, nb_classes)
