@@ -114,7 +114,7 @@ def train():
         ([tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 224,224,3]), 
         tf.TensorShape([BATCH_SIZE, FRAMES_PER_VIDEO, 256, 256, 3])],
         tf.TensorShape([1])))
-    )
+        
     history = model.fit( #fit_generator does not work with distributed stratergy
         gn,
         steps_per_epoch=train_steps,
