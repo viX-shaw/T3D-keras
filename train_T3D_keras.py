@@ -145,3 +145,4 @@ if __name__ == '__main__':
     finally:
         # Destroying the current TF graph to avoid clutter from old models / layers
         # K.clear_session()
+        pass
