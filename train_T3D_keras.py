@@ -61,7 +61,7 @@ def train():
     # model = densenet121_3D_DropOut(sample_input.shape, nb_classes)
     model = densenet161_3D_DropOut(sample_input.shape, nb_classes)
 
-    checkpoint = ModelCheckpoint('T3D_saved_model_weights.hdf5', monitor='val_acc',
+    checkpoint = ModelCheckpoint('T3D_saved_model_weights.hdf5', monitor='val_loss',
                                  verbose=1, save_best_only=True, mode='min', save_weights_only=True)
     earlyStop = EarlyStopping(monitor='val_loss', mode='min', patience=100)
     reduceLROnPlat = ReduceLROnPlateau(monitor='val_loss', factor=0.5,
