@@ -144,4 +144,4 @@ if __name__ == '__main__':
         traceback.print_tb(err.__traceback__)
     finally:
         # Destroying the current TF graph to avoid clutter from old models / layers
-        K.clear_session()
+        # K.clear_session()
