@@ -71,7 +71,7 @@ def train():
     callbacks_list = [checkpoint, reduceLROnPlat, earlyStop]
 
     # compile model
-    optim = Adam(lr=1e-4, decay=1e-6)
+    optim = Adam(lr=1e-3, decay=1e-6)
     #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
     model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
     
