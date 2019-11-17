@@ -64,15 +64,15 @@ def train():
     checkpoint = ModelCheckpoint('T3D_saved_model_weights.hdf5', monitor='val_loss',
                                  verbose=1, save_best_only=True, mode='min', save_weights_only=True)
     earlyStop = EarlyStopping(monitor='val_loss', mode='min', patience=100)
-    reduceLROnPlat = ReduceLROnPlateau(monitor='val_loss', factor=0.5,
-                                       patience=20,
+    reduceLROnPlat = ReduceLROnPlateau(monitor='val_loss', factor=0.1,
+                                       patience=10,
                                        verbose=1, mode='min', min_delta=0.0001, cooldown=2, min_lr=1e-6)
 
     callbacks_list = [checkpoint, reduceLROnPlat, earlyStop]
 
     # compile model
-    optim = Adam(lr=1e-3, decay=1e-6)
-    #optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
+    # optim = Adam(lr=1e-3, decay=1e-6)
+    optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
     model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
     
     if os.path.exists('./T3D_saved_model_weights.hdf5'):
