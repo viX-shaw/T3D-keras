@@ -65,7 +65,7 @@ def train():
                                  verbose=1, save_best_only=True, mode='min', save_weights_only=True)
     earlyStop = EarlyStopping(monitor='val_loss', mode='min', patience=100)
     reduceLROnPlat = ReduceLROnPlateau(monitor='val_loss', factor=0.1,
-                                       patience=10,
+                                       patience=16,
                                        verbose=1, mode='min', min_delta=0.0001, cooldown=2, min_lr=1e-6)
 
     callbacks_list = [checkpoint, reduceLROnPlat, earlyStop]
