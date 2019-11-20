@@ -77,7 +77,7 @@ def train():
     
     if os.path.exists('./T3D_saved_model_weights.hdf5'):
         print('Pre-existing model weights found, loading weights.......')
-        model.load_weights('./T3D_saved_model_weights.hdf5')
+        model.load_weights('./T3D_saved_model_weights.hdf5', by_name=True)
         print('Weights loaded')
 
     # train model
