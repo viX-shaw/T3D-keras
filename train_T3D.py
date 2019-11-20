@@ -44,9 +44,8 @@ def train():
         [FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL], dtype=np.uint8)
 
     # Read Dataset
-    d_train = pd.read_csv(os.path.join('train.csv'))[:500]
-    d_valid = pd.read_csv(os.path.join('test.csv'))[:200]
-    print(d_train.shape, d_valid.shape)
+    d_train = pd.read_csv("/content/anomaly_train.csv")[:500]
+    d_valid = pd.read_csv("/content/anomaly_test.csv")[:200]
     # Split data into random training and validation sets
     nb_classes = 4 #len(set(d_train['class']))
 
