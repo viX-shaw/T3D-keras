@@ -12,13 +12,13 @@ def create_train_csv(fp):
     with open(fp, 'r') as f:
         _files = [e.split("/")[-1] for e in f.readlines()]
     for idx, entry in action_classes:
-        for filename in glob.glob("UCF_Crime/{}*".format(entry))
+        for filename in glob.glob("UCF_Crime/{}*".format(entry)):
             if filename.split("/")[-1] in _files:
                 train.append([filename, idx, entry])
     with open('/content/anomaly_train.csv', 'w') as csvfile:
-    mywriter = csv.writer(csvfile)
-    mywriter.writerow(["path", "class", "sport"])
-    mywriter.writerows(train)
+        mywriter = csv.writer(csvfile)
+        mywriter.writerow(["path", "class", "sport"])
+        mywriter.writerows(train)
     print("Training csv created successfully.")
 
 def create_test_csv(fp):
@@ -26,13 +26,13 @@ def create_test_csv(fp):
     with open(fp, 'r') as f:
         _files = [e.split("/")[-1] for e in f.readlines()]
     for idx, entry in action_classes:
-        for filename in glob.glob("UCF_Crime/{}*".format(entry))
+        for filename in glob.glob("UCF_Crime/{}*".format(entry)):
             if filename.split("/")[-1] in _files:
                 test.append([filename, idx, entry])
     with open('/content/anomaly_test.csv', 'w') as csvfile:
-    mywriter = csv.writer(csvfile)
-    mywriter.writerow(["path", "class", "sport"])
-    mywriter.writerows(test)
+        mywriter = csv.writer(csvfile)
+        mywriter.writerow(["path", "class", "sport"])
+        mywriter.writerows(test)
     print("Test csv created successfully.")
 
 if __name__ == "__main__":
