@@ -10,18 +10,25 @@ ROOT_PATH = ''
 
 def get_video_frames(src, fpv, frame_height, frame_width):
     # print('reading video from', src)
-    print("\n"+str(os.path.getsize(src))+"\n")
+    # print("\n"+str(os.path.getsize(src))+"\n")
     cap = cv2.VideoCapture(src)
-
-    frames = []
+    try
+        step = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))//fpv
+    else:
+        step = 24
+    print("\nStep", str(step))
+    avg_frames = []
     if not cap.isOpened():
         cap.open(src)
     ret = True
     while(True and ret):
         # Capture frame-by-frame
+        if len(avg_frames) == 20:
+            break
         ret, frame = cap.read()
-
-        frames.append(frame)
+        f_no = int(cap.get(1))
+        if f_no % step == 0:
+            avg_frames.append(frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
@@ -29,9 +36,9 @@ def get_video_frames(src, fpv, frame_height, frame_width):
     cap.release()
     print("\nLoaded\n")
     # Returning fpv=10 frames
-    step = len(frames)//fpv
-    avg_frames = frames[::step]
-    avg_frames = avg_frames[:fpv]
+    # step = len(frames)//fpv
+    # avg_frames = frames[::step]
+    # avg_frames = avg_frames[:fpv]
     avg_resized_frames_2d = []
     avg_resized_frames_3d = []
     for af in avg_frames:
