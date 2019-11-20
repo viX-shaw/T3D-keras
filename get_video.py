@@ -9,7 +9,7 @@ ROOT_PATH = ''
 
 
 def get_video_frames(src, fpv, frame_height, frame_width):
-    # print('reading video from', src)
+    print('reading video from', src)
     cap = cv2.VideoCapture(src)
 
     frames = []

@@ -46,6 +46,7 @@ def train():
     # Read Dataset
     d_train = pd.read_csv(os.path.join('train.csv'))[:500]
     d_valid = pd.read_csv(os.path.join('test.csv'))[:200]
+    print(d_train.shape, d_valid.shape)
     # Split data into random training and validation sets
     nb_classes = 4 #len(set(d_train['class']))
 
