@@ -172,9 +172,9 @@ class T3DDataGenerator(Sequence):
             frames, single_clip, sport_class = get_video_and_label(
                 i, self.data, self.frames_per_video, self.frame_height, self.frame_width)
             
-            # print(single_clip.shape)
             input_3d = np.append(input_3d, single_clip, axis=0)
             y_train = np.append(y_train, [sport_class])
+            print(input_3d.shape)
 
         y_train = to_categorical(y_train, num_classes=self.num_classes) # Num classes 2 for transfer 2D -> 3D
 
