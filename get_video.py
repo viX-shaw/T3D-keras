@@ -14,9 +14,11 @@ def get_video_frames(src, fpv, frame_height, frame_width):
     cap = cv2.VideoCapture(src)
     try:
         step = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))//fpv
+        if step > 100:
+            step = 24
     except:
         step = 24
-    print("\nStep", str(step))
+    # print("\nStep", str(step))
     avg_frames = []
     if not cap.isOpened():
         cap.open(src)
@@ -34,7 +36,7 @@ def get_video_frames(src, fpv, frame_height, frame_width):
 
     # When everything done, release the capture
     cap.release()
-    print("\nLoaded\n")
+    # print("\nLoaded\n")
     # Returning fpv=10 frames
     # step = len(frames)//fpv
     # avg_frames = frames[::step]
@@ -183,7 +185,7 @@ class T3DDataGenerator(Sequence):
             
             input_3d = np.append(input_3d, single_clip, axis=0)
             y_train = np.append(y_train, [sport_class])
-            print(input_3d.shape)
+            # print(input_3d.shape)
 
         y_train = to_categorical(y_train, num_classes=self.num_classes) # Num classes 2 for transfer 2D -> 3D
 
