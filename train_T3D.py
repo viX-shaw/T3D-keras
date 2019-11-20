@@ -47,7 +47,7 @@ def train():
     d_train = pd.read_csv(os.path.join('train.csv'))[:500]
     d_valid = pd.read_csv(os.path.join('test.csv'))[:200]
     # Split data into random training and validation sets
-    nb_classes = 2 #len(set(d_train['class']))
+    nb_classes = 4 #len(set(d_train['class']))
 
     # video_train_generator = video_gen(
     #     d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
@@ -61,7 +61,7 @@ def train():
     
     # Get Model
     # model = densenet121_3D_DropOut(sample_input.shape, nb_classes)
-    model = T3D(sample_input.shape, num_classes = params.num_classes)
+    model = T3D(sample_input.shape, num_classes = nb_classes)
 
     checkpoint = ModelCheckpoint('T3D_saved_model_weights.hdf5', monitor='val_loss',
                                  verbose=1, save_best_only=True, mode='min', save_weights_only=True)
