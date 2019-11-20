@@ -144,6 +144,7 @@ class DataGenerator(Sequence):
 class T3DDataGenerator(Sequence):
 
     def __init__(self, data, frames_per_video, frame_height, frame_width, channels, num_classes, batch_size=1):
+        print("T3DGenerator initialized")
         self.data = data
         self.frames_per_video = frames_per_video
         self.frame_height = frame_height
