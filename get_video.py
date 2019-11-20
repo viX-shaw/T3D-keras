@@ -9,7 +9,7 @@ ROOT_PATH = ''
 
 
 def get_video_frames(src, fpv, frame_height, frame_width):
-    print('reading video from', src)
+    # print('reading video from', src)
     cap = cv2.VideoCapture(src)
 
     frames = []
@@ -38,6 +38,7 @@ def get_video_frames(src, fpv, frame_height, frame_width):
         rsz_f_2d = cv2.resize(af, (224, 224))
         avg_resized_frames_2d.append(rsz_f_2d)
         avg_resized_frames_3d.append(rsz_f_3d)
+    del avg_frames
     return np.asarray(avg_resized_frames_2d)/255.0, np.asarray(avg_resized_frames_3d)/255.0
 
 
@@ -171,7 +172,7 @@ class T3DDataGenerator(Sequence):
             frames, single_clip, sport_class = get_video_and_label(
                 i, self.data, self.frames_per_video, self.frame_height, self.frame_width)
             
-            print(single_clip.shape)
+            # print(single_clip.shape)
             input_3d = np.append(input_3d, single_clip, axis=0)
             y_train = np.append(y_train, [sport_class])
 
