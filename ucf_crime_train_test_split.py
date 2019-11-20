@@ -7,7 +7,7 @@ import argparse
 action_classes = None
 def create_train_csv(fp):
     global action_classes
-    action_classes = set([re.split("[0-9]+",e.split("/")[-1].split(".")[0])[0] for e in glob.glob("/content/UCF_Crime/*")])
+    action_classes = set([re.split("[_]*[0-9]+",e.split("/")[-1].split(".")[0])[0] for e in glob.glob("/content/UCF_Crime/*")])
     print(action_classes)
     train = []
     with open(fp, 'r') as f:
