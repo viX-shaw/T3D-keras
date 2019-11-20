@@ -154,8 +154,8 @@ def DenseNet3D(input_shape, growth_rate=32, block_config=(6, 12, 24, 16),
 
 
 # The T3D CNN standalone
-def T3D(input_shape, growth_rate=32, block_config=(6, 12, 24, 16),
-               num_init_features=64, bn_size=4, drop_rate=0, num_classes=5):
+def T3D(input_shape, growth_rate=48, block_config=(6, 12, 36, 24),
+               num_init_features=96, bn_size=4, drop_rate=0, num_classes=5):
     r"""Densenet-BC model class, based on
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`
     Args:
