@@ -14,7 +14,7 @@ def get_video_frames(src, fpv, frame_height, frame_width):
     cap = cv2.VideoCapture(src)
     try:
         step = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))//fpv
-    else:
+    except:
         step = 24
     print("\nStep", str(step))
     avg_frames = []
