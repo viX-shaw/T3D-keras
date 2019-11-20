@@ -20,8 +20,8 @@ parser.add_argument("--q_size", type=int, default=10, help="Keras Fit Generator 
 parser.add_argument("--workers", type=int, default=1, help="Keras Fit Generator workers")
 parser.add_argument("--epochs", type=int, default=200, help="epochs, times you want to feed all the data")
 parser.add_argument("--use_multiprocessing", type=str, default="False", help="use mulitple processes")
-params.add_argument("--pre-trained", type=str, default="", help="2d->3d transfer model")
-params.add_argument("--t3d_weights", type=str, default='./T3D_saved_model_weights.hdf5', help="2d->3d transfer model")
+parser.add_argument("--pre-trained", type=str, default="", help="2d->3d transfer model")
+parser.add_argument("--t3d_weights", type=str, default='./T3D_saved_model_weights.hdf5', help="2d->3d transfer model")
 
 
 
