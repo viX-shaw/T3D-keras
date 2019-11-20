@@ -7,14 +7,14 @@ import argparse
 action_classes = None
 def create_train_csv(fp):
     global action_classes
-    action_classes = set([re.split("[0-9]+",e.split("/")[-1].split(".")[0])[0] for e in glob.glob("/UCF_Crime/*")])
+    action_classes = set([re.split("[0-9]+",e.split("/")[-1].split(".")[0])[0] for e in glob.glob("/content/UCF_Crime/*")])
     print(action_classes)
     train = []
     with open(fp, 'r') as f:
         _files = [e.split("/")[-1] for e in f.readlines()]
         print(_files[:5])
     for idx, entry in action_classes:
-        for filename in glob.glob("UCF_Crime/{}*".format(entry)):
+        for filename in glob.glob("/content/UCF_Crime/{}*".format(entry)):
             if idx < 5:
                 print("F  ", filename.split("/")[-1])
             if filename.split("/")[-1] in _files:
@@ -30,7 +30,7 @@ def create_test_csv(fp):
     with open(fp, 'r') as f:
         _files = [e.split("/")[-1] for e in f.readlines()]
     for idx, entry in action_classes:
-        for filename in glob.glob("UCF_Crime/{}*".format(entry)):
+        for filename in glob.glob("/content/UCF_Crime/{}*".format(entry)):
             if filename.split("/")[-1] in _files:
                 test.append([filename, idx, entry])
     with open('/content/anomaly_test.csv', 'w') as csvfile:
