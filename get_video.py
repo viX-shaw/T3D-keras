@@ -12,7 +12,7 @@ def get_video_frames(src, fpv, frame_height, frame_width):
     # print('reading video from', src)
     # print("\n"+str(os.path.getsize(src))+"\n")
     cap = cv2.VideoCapture(src)
-    try
+    try:
         step = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))//fpv
     else:
         step = 24
