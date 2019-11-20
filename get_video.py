@@ -139,3 +139,41 @@ class DataGenerator(Sequence):
         y_train = to_categorical(y_train, num_classes=self.num_classes) # Num classes 2 for transfer 2D -> 3D
 
         return ([input_2d, input_3d], y_train)
+
+class T3DDataGenerator(Sequence):
+
+    def __init__(self, data, frames_per_video, frame_height, frame_width, channels, num_classes, batch_size=1):
+        self.data = data
+        self.frames_per_video = frames_per_video
+        self.frame_height = frame_height
+        self.frame_width = frame_width
+        self.channels = channels
+        self.num_classes = num_classes
+        self.batch_size = batch_size
+        self.on_epoch_end()        
+
+    def __len__(self):
+        return self.data.count()[0]
+
+    def on_epoch_end(self):
+        self.indices_arr = np.random.permutation(self.data.count()[0])
+    
+    def __getitem__(self, index):
+        current_batch = self.indices_arr[index:(index + self.batch_size)]
+
+        # initializing the arrays, x_train and y_train
+        input_3d = np.empty([0, self.frames_per_video, self.frame_height, self.frame_width, self.channels], dtype=np.float32)
+
+        y_train = np.empty([0], dtype=np.int32)
+
+        for i in current_batch:
+            # get frames and its corresponding color for an traffic light
+            frames, single_clip, sport_class = get_video_and_label(
+                i, self.data, self.frames_per_video, self.frame_height, self.frame_width)
+            
+            input_3d = np.append(input_3d, single_clip, axis=0)
+            y_train = np.append(y_train, [sport_class])
+
+        y_train = to_categorical(y_train, num_classes=self.num_classes) # Num classes 2 for transfer 2D -> 3D
+
+        return (input_3d, y_train)

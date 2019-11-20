@@ -10,7 +10,7 @@ import traceback
 import argparse
 
 from T3D_keras import T3D
-from get_video import video_gen, DataGenerator
+from get_video import video_gen, T3DDataGenerator
 
 # there is a minimum number of frames that the network must have, values below 10 gives -- ValueError: Negative dimension size caused by subtracting 3 from 2 for 'conv3d_7/convolution'
 # paper uses 224x224, but in that case also the above error occurs
@@ -54,9 +54,9 @@ def train():
     # video_val_generator = video_gen(
     #     d_valid, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
 
-    video_train_generator = DataGenerator(
+    video_train_generator = T3DDataGenerator(
         d_train, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
-    video_val_generator = DataGenerator(
+    video_val_generator = T3DDataGenerator(
         d_valid, FRAMES_PER_VIDEO, FRAME_HEIGHT, FRAME_WIDTH, FRAME_CHANNEL, nb_classes, batch_size=BATCH_SIZE)
     
     # Get Model
