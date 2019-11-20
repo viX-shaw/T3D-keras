@@ -11,9 +11,9 @@ def create_train_csv(fp):
     print(action_classes)
     train = []
     with open(fp, 'r') as f:
-        _files = [e.split("/")[-1] for e in f.readlines()]
+        _files = [e.split("/")[-1].split("\n")[0] for e in f.readlines()]
         print(_files[:5])
-    for idx, entry in action_classes:
+    for idx, entry in enumerate(list(action_classes)):
         for filename in glob.glob("/content/UCF_Crime/{}*".format(entry)):
             if idx < 5:
                 print("F  ", filename.split("/")[-1])
@@ -28,8 +28,8 @@ def create_train_csv(fp):
 def create_test_csv(fp):
     test = []
     with open(fp, 'r') as f:
-        _files = [e.split("/")[-1] for e in f.readlines()]
-    for idx, entry in action_classes:
+        _files = [e.split("/")[-1].split("\n")[0] for e in f.readlines()]
+    for idx, entry in enumerate(list(action_classes)):
         for filename in glob.glob("/content/UCF_Crime/{}*".format(entry)):
             if filename.split("/")[-1] in _files:
                 test.append([filename, idx, entry])
