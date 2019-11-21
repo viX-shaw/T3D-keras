@@ -74,7 +74,7 @@ def train():
 
     # compile model
     # optim = Adam(lr=1e-3, decay=1e-6)
-    optim = SGD(lr = 0.1, momentum=0.9, decay=1e-4, nesterov=True)
+    optim = SGD(lr = 0.01, momentum=0.9, decay=1e-4, nesterov=True)
     model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
     
     if os.path.exists('./T3D_saved_model_weights.hdf5'):
