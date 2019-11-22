@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from keras.optimizers import Adam, SGD
+from keras.models import load_model
 import keras.backend as K
 import traceback
 import argparse
@@ -22,6 +23,7 @@ parser.add_argument("--epochs", type=int, default=200, help="epochs, times you w
 parser.add_argument("--use_multiprocessing", type=str, default="False", help="use mulitple processes")
 parser.add_argument("--pre-trained", type=str, default="", help="2d->3d transfer model")
 parser.add_argument("--t3d_weights", type=str, default='./T3D_saved_model_weights.hdf5', help="2d->3d transfer model")
+parser.add_argument("--ckpt_model", type=str, default='./T3D_saved_model.h5')
 parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
 
 
@@ -62,7 +64,6 @@ def train():
     
     # Get Model
     # model = densenet121_3D_DropOut(sample_input.shape, nb_classes)
-    model = T3D(sample_input.shape, num_classes = nb_classes)
 
     checkpoint = ModelCheckpoint('T3D_saved_model_weights.hdf5', monitor='val_loss',
                                  verbose=1, save_best_only=True, mode='min', save_weights_only=True)
@@ -76,13 +77,19 @@ def train():
     # compile model
     # optim = Adam(lr=1e-3, decay=1e-6)
     print("Learning rate {}".format(params.lr))
-    optim = SGD(lr = params.lr, momentum=0.9, decay=1e-4, nesterov=True)
-    model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
-    
-    if os.path.exists('./T3D_saved_model_weights.hdf5'):
-        print('Pre-existing model weights found, loading weights.......')
-        model.load_weights(params.t3d_weights, by_name=True)
-        print('Weights loaded')
+    if os.path.exists(params.ckpt_model):
+        print("Loading model....")
+        model = load_model(params.ckpt_model)
+        print("Model loaded")
+    else:
+        model = T3D(sample_input.shape, num_classes = nb_classes)
+        optim = SGD(lr = params.lr, momentum=0.9, decay=1e-4, nesterov=True)
+        model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
+        
+        if os.path.exists('./T3D_saved_model_weights.hdf5'):
+            print('Pre-existing model weights found, loading weights.......')
+            model.load_weights(params.t3d_weights, by_name=True)
+            print('Weights loaded')
 
     # train model
     print('Training started....')
